@@ -144,7 +144,8 @@ lowerCase:
     j doneCheck
 
 notChar:
-    j doneCheck
+    addiu $s1, $s1, 1
+    j for
 
 doneCheck:
     li $v0, 4
