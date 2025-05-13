@@ -105,6 +105,15 @@ for:
     beq $s0, $zero, endloop # check end of string
     beq $s0, $t0, endloop # checks for newline
 
+    # print the original character
+    li $v0, 11
+    move $a0, $s0
+    syscall
+
+    li $v0, 4
+    la $a0, newline
+    syscall
+
     li $t0, 65
     li $t1, 90
 
