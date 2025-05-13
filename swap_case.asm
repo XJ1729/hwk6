@@ -133,6 +133,11 @@ for:
     j doneCheck
 
 lowerCase:
+    li $t0, 97
+    li $t1, 122
+    blt $s0, $t0, notChar
+    bgt $s0, $t1, notChar
+    
     # print the original character
     li $v0, 11
     move $a0, $s0
@@ -141,11 +146,7 @@ lowerCase:
     li $v0, 4
     la $a0, newline
     syscall
-    
-    li $t0, 97
-    li $t1, 122
-    blt $s0, $t0, notChar
-    bgt $s0, $t1, notChar
+
     #  change to lowercase
     addiu $s0, $s0, -32
 
