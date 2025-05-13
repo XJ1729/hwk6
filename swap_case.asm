@@ -93,7 +93,64 @@ Exit:
 # YOU CAN ONLY MODIFY THIS FILE FROM THIS POINT ONWARDS:
 SwapCase:
     #TODO: write your code here, $a0 stores the address of the string
-    
+    addiu $sp, $sp, -12
+    sw $s1, 8($sp)
+    sw $s0, 4($sp)
+    sw $ra, 0($sp)
+    move $s1, $a0
+
+for:
+    li $t0, 10
+    lbu $s0, 0($s1) # stores value of current character
+    beq $s0, $zero, endloop # check end of string
+    beq $s0, $t0, endloop # checks for newline
+
+    li $t0, 65
+    li $t1, 90
+
+    # check if is character
+    blt $s0, $t0, notChar
+    bgt $s0, $t1, lowerCase
+    # uppercase
+    addiu $s0, $s0, 32
+
+    li $v0, 11
+    move $a0, $s0
+    syscall
+    sb $s0, 0($s1)
+    j doneCheck
+
+lowerCase:
+    li $t0, 97
+    li $t1, 122
+    blt $s0, $t0, notChar
+    bgt $s0, $t1, notChar
+    # lowercase
+    addiu $s0, $s0, -32
+
+    li $v0, 11
+    move $a0, $s0
+    syscall
+    sb $s0, 0($s1)
+    j doneCheck
+
+notChar:
+    j doneCheck
+
+doneCheck:
+    li $v0, 4
+    la $a0, newline
+    syscall
+
+    jal ConventionCheck
+    addiu $s1, $s1, 1
+    j for
+
+endloop:
+    lw $s1, 8($sp)
+    lw $s0, 4($sp)
+    lw $ra, 0($sp)
+    addiu $sp, $sp, 12
     # Do not remove the "jr $ra" line below!!!
     # It should be the last line in your function code!
     jr $ra
