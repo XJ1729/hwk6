@@ -105,6 +105,15 @@ for:
     beq $s0, $zero, endloop # check end of string
     beq $s0, $t0, endloop # checks for newline
 
+    li $t0, 65
+    li $t1, 90
+
+    # check if is character
+    blt $s0, $t0, notChar
+    bgt $s0, $t1, lowerCase
+
+    # uppercase
+
     # print the original character
     li $v0, 11
     move $a0, $s0
@@ -114,13 +123,7 @@ for:
     la $a0, newline
     syscall
 
-    li $t0, 65
-    li $t1, 90
-
-    # check if is character
-    blt $s0, $t0, notChar
-    bgt $s0, $t1, lowerCase
-    # uppercase
+    # change to lowercase
     addiu $s0, $s0, 32
 
     li $v0, 11
@@ -130,11 +133,20 @@ for:
     j doneCheck
 
 lowerCase:
+    # print the original character
+    li $v0, 11
+    move $a0, $s0
+    syscall
+
+    li $v0, 4
+    la $a0, newline
+    syscall
+    
     li $t0, 97
     li $t1, 122
     blt $s0, $t0, notChar
     bgt $s0, $t1, notChar
-    # lowercase
+    #  change to lowercase
     addiu $s0, $s0, -32
 
     li $v0, 11
